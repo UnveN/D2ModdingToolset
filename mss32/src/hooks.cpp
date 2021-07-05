@@ -19,6 +19,7 @@
 
 #include "hooks.h"
 #include "attackimpl.h"
+#include "attackmodified.h"
 #include "attackreachcat.h"
 #include "attackutils.h"
 #include "autodialog.h"
@@ -427,6 +428,13 @@ Hooks getHooks()
          */
         hooks.emplace_back(HookInfo{fn.generateAttackDescription, generateAttackDescriptionHooked});
     }
+
+    // TODO: test
+    hooks.emplace_back(HookInfo{CAttackModifiedApi::vftable()->getDrain,
+                                attackModifiedGetDrainHooked,
+                                (void**)&orig.attackModifiedGetDrain});
+    hooks.emplace_back(HookInfo{CAttackModifiedApi::vftable()->getAttackSource,
+                                attackModifiedGetAttackSourceHooked});
 
     return hooks;
 }

@@ -69,6 +69,7 @@ struct OriginalFunctions
     game::CNetMsgApi::Api::Destructor netMsgDtor;
     game::CAttackImplApi::Api::Constructor2 attackImplCtor2;
     game::IAttackVftable::GetData attackImplGetData;
+    game::IAttackVftable::GetDrain attackModifiedGetDrain;
 };
 
 OriginalFunctions& getOriginalFunctions();

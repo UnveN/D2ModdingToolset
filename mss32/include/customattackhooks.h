@@ -35,6 +35,7 @@ struct CMidUnit;
 struct CMidStack;
 struct CAttackImpl;
 struct CAttackData;
+struct CAttackModified;
 struct IUsSoldier;
 struct CDBTable;
 struct GlobalData;
@@ -81,6 +82,13 @@ game::CAttackImpl* __fastcall attackImplCtor2Hooked(game::CAttackImpl* thisptr,
 void __fastcall attackImplGetDataHooked(game::CAttackImpl* thisptr,
                                         int /*%edx*/,
                                         game::CAttackData* value);
+
+int __fastcall attackModifiedGetDrainHooked(game::CAttackModified* thisptr,
+                                            int /*%edx*/,
+                                            int damage);
+
+game::LAttackSource* __fastcall attackModifiedGetAttackSourceHooked(game::CAttackModified* thisptr,
+                                                                    int /*%edx*/);
 
 game::IBatAttack* __stdcall createBatAttackHooked(game::IMidgardObjectMap* objectMap,
                                                   game::BattleMsgData* battleMsgData,

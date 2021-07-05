@@ -516,9 +516,23 @@ std::string getHitText(game::IEncUnitDescriptor* descriptor,
     return result;
 }
 
-std::string getSourceText(game::IAttack* attack, game::IAttack* altAttack)
+std::string getSourceText(game::IAttack* attack,
+                          game::IAttack* altAttack,
+                          game::IEncUnitDescriptor* descriptor)
 {
-    auto result = getAttackSourceText(attack);
+    using namespace game;
+
+    // TODO: test
+    auto modifiedSource = descriptor->vftable->getAttackSource(descriptor);
+    auto source = attack->vftable->getAttackSource(attack);
+
+    std::string result;
+    if (source->id != modifiedSource->id) {
+        result = fmt::format("\\c025;090;000;{:s}\\c000;000;000;",
+                             getAttackSourceText(modifiedSource));
+    } else {
+        result = getAttackSourceText(attack);
+    }
 
     if (altAttack != nullptr)
         result = addAltAttackTextValue(result, getAttackSourceText(altAttack));
@@ -673,7 +687,7 @@ void __stdcall generateAttackDescriptionHooked(game::IEncUnitDescriptor* descrip
             getDamageText(descriptor, attack, attack2, altAttack, modifiers, boostDamageLevel,
                           lowerDamageLevel, damageMax));
 
-    replace(description, "%SOURCE%", getSourceText(attack, altAttack));
+    replace(description, "%SOURCE%", getSourceText(attack, altAttack, descriptor));
 
     replace(description, "%SOURCE2%", getSource2Text(attack2));
 

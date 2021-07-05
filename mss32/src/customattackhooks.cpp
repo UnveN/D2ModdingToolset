@@ -20,6 +20,7 @@
 #include "customattackhooks.h"
 #include "attackclasscat.h"
 #include "attackimpl.h"
+#include "attackmodified.h"
 #include "attackutils.h"
 #include "customattack.h"
 #include "customattacks.h"
@@ -334,6 +335,54 @@ void __fastcall attackImplGetDataHooked(game::CAttackImpl* thisptr,
     value->damageRatio = thisptr->data->damageRatio;
     value->damageRatioPerTarget = thisptr->data->damageRatioPerTarget;
     value->damageSplit = thisptr->data->damageSplit;
+}
+
+int __fastcall attackModifiedGetDrainHooked(game::CAttackModified* thisptr,
+                                            int /*%edx*/,
+                                            int damage)
+{
+    if (thisptr->data->attackDrain >= 75)
+        return 0;
+
+    return getOriginalFunctions().attackModifiedGetDrain(thisptr, damage);
+}
+
+game::LAttackSource* __fastcall attackModifiedGetAttackSourceHooked(game::CAttackModified* thisptr,
+                                                                    int /*%edx*/)
+{
+    using namespace game;
+
+    const auto& sources = AttackSourceCategories::get();
+
+    if (thisptr->data->attackDrain >= 75) {
+        AttackSourceId id = (AttackSourceId)(thisptr->data->attackDrain - 75);
+
+        if (id == sources.weapon->id)
+            return sources.weapon;
+        else if (id == sources.mind->id)
+            return sources.mind;
+        else if (id == sources.life->id)
+            return sources.life;
+        else if (id == sources.death->id)
+            return sources.death;
+        else if (id == sources.fire->id)
+            return sources.fire;
+        else if (id == sources.water->id)
+            return sources.water;
+        else if (id == sources.air->id)
+            return sources.air;
+        else if (id == sources.earth->id)
+            return sources.earth;
+        else {
+            for (auto& custom : getCustomAttacks().sources) {
+                if (id == custom.source.id)
+                    return &custom.source;
+            }
+        }
+    }
+
+    auto attack = thisptr->data->impl;
+    return attack->vftable->getAttackSource(attack);
 }
 
 game::IBatAttack* __stdcall createBatAttackHooked(game::IMidgardObjectMap* objectMap,
