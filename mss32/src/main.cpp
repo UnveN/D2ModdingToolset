@@ -207,6 +207,14 @@ BOOL APIENTRY DllMain(HMODULE hDll, DWORD reason, LPVOID reserved)
 
     mainThreadId = std::this_thread::get_id();
 
+    if (!SetCurrentDirectoryW(hooks::gameFolder().c_str())) {
+        const std::string msg{
+            fmt::format("Failed to set current directory.\nError code: {:d}.", GetLastError())};
+
+        MessageBox(NULL, msg.c_str(), "mss32.dll proxy", MB_OK);
+        return FALSE;
+    }
+
     library = LoadLibrary("Mss23.dll");
     if (!library) {
         MessageBox(NULL, "Failed to load Mss23.dll", "mss32.dll proxy", MB_OK);
