@@ -1265,6 +1265,9 @@
     <ClCompile Include="src\bindings\fogview.cpp">
       <Filter>bindings</Filter>
     </ClCompile>
+    <ClCompile Include="src\customunitdescriptorfunctions.cpp">
+      <Filter>features</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aipriority.h">
@@ -3288,6 +3291,9 @@
     </ClInclude>
     <ClInclude Include="include\bindings\fogview.h">
       <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="include\customunitdescriptorfunctions.h">
+      <Filter>features</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
