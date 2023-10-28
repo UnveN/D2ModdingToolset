@@ -1265,6 +1265,9 @@
     <ClCompile Include="src\bindings\fogview.cpp">
       <Filter>bindings</Filter>
     </ClCompile>
+    <ClCompile Include="src\customunitdescriptor.cpp">
+      <Filter>features</Filter>
+    </ClCompile>
     <ClCompile Include="src\customunitdescriptorfunctions.cpp">
       <Filter>features</Filter>
     </ClCompile>
@@ -3291,6 +3294,9 @@
     </ClInclude>
     <ClInclude Include="include\bindings\fogview.h">
       <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="include\customunitdescriptor.h">
+      <Filter>features</Filter>
     </ClInclude>
     <ClInclude Include="include\customunitdescriptorfunctions.h">
       <Filter>features</Filter>
