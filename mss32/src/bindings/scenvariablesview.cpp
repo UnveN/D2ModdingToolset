@@ -42,6 +42,7 @@ ScenVariablesView::ScenVariablesView(const game::CMidScenVariables* scenVariable
 void ScenVariablesView::bind(sol::state& lua)
 {
     auto vars = lua.new_usertype<ScenVariablesView>("ScenarioVariables");
+    vars["items"] = sol::property(&ScenVariablesView::getItems);
     vars["getVariable"] = &ScenVariablesView::getScenarioVariable;
 }
 
@@ -58,6 +59,18 @@ std::optional<ScenarioVariableView> ScenVariablesView::getScenarioVariable(
     }
 
     return ScenarioVariableView{it->second};
+}
+
+std::vector<ScenarioVariableView> ScenVariablesView::getItems() const
+{
+    std::vector<ScenarioVariableView> result;
+    result.reserve(scenVariables->variables.length);
+
+    for (const auto& variable : scenVariables->variables) {
+        result.push_back(&variable);
+    }
+
+    return result;
 }
 
 } // namespace bindings

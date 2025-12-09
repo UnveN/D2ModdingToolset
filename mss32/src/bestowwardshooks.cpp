@@ -118,11 +118,24 @@ bool __fastcall bestowWardsAttackCanPerformHooked(game::CBatAttackBestowWards* t
 {
     using namespace game;
 
+    const auto& fn = gameFunctions();
+
+    if (*targetUnitId == emptyId || *targetUnitId == invalidId) {
+        return false;
+    }
+
     CMidgardID targetGroupId{};
     thisptr->vftable->getTargetGroupId(thisptr, &targetGroupId, battleMsgData);
 
     CMidgardID targetUnitGroupId{};
     gameFunctions().getAllyOrEnemyGroupId(&targetUnitGroupId, battleMsgData, targetUnitId, true);
+
+    CMidUnit* unit = fn.findUnitById(objectMap, targetUnitId);
+    if (!unit) {
+        return false;
+    }
+
+    auto soldier = fn.castUnitImplToSoldier(unit->unitImpl);
 
     if (targetUnitGroupId != targetGroupId)
         return false;

@@ -1329,6 +1329,43 @@ location.radius
 
 ---
 
+#### Landmark
+Represents landmark object in scenario.
+
+Methods:
+##### id
+Returns landmark [identifier](luaApi.md#id).
+```lua
+landmark.id
+```
+##### position
+Returns copy of location position as a [point](luaApi.md#point).
+```lua
+landmark.position
+```
+##### size
+Returns size of landmark
+```lua
+landmark.size
+```
+##### mountain
+Returns true if landmark is mountain.
+```lua
+landmark.mountain
+```
+##### description
+Returns description of landmark
+```lua
+landmark.description
+```
+##### typeId
+Returns base landmark id from GLmark.dbf
+```lua
+landmark.typeId
+```
+
+---
+
 #### ScenarioVariable
 Represents scenario variable used by events.
 
@@ -1346,6 +1383,11 @@ variable.value
 Stores scenario variables, allows searching them by name.
 
 Methods:
+##### items
+Returns an array of [ScenarioVariable](luaApi.md#scenariovariable).
+```lua
+local variables = variables.items
+```
 ##### getVariable
 Searches for [ScenarioVariable](luaApi.md#scenariovariable) by its name, reeturns `nil` if not found.
 ```lua
@@ -1430,6 +1472,20 @@ Searches for [Location](luaApi.md#location) by id string or [Id](luaApi.md#id), 
 ```lua
 local location = scenario:getLocation('S143LO0001')
 if (location == nil) then
+    return
+end
+```
+##### getLandmark
+Searches for [landmark](luaApi.md#landmark) by:
+- id string
+- [id](luaApi.md#id)
+- pair of coordinates
+- [point](luaApi.md#point)
+
+Returns `nil` if not found.
+```lua
+local landmark = scenario:getLandmark(10, 15)
+if (landmark == nil) then
     return
 end
 ```
@@ -1670,6 +1726,13 @@ Searches for every [location](luaApi.md#location) on a map and calls specified f
 ```lua
 scenario:forEachLocation(function (location)
   log('Visit location ' .. tostring(location.id))
+end)
+```
+##### forEachLandmark
+Searches for every [landmark](luaApi.md#landmark) on a map and calls specified function on it.
+```lua
+scenario:forEachLandmark(function (location)
+  log('Visit landmark ' .. tostring(location.id))
 end)
 ```
 ##### forEachFort

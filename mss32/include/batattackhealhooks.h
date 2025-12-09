@@ -1,7 +1,7 @@
 /*
  * This file is part of the modding toolset for Disciples 2.
  * (https://github.com/VladimirMakeev/D2ModdingToolset)
- * Copyright (C) 2021 Vladimir Makeev.
+ * Copyright (C) 2025 Alexey Voskresensky.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,37 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCENVARIABLESVIEW_H
-#define SCENVARIABLESVIEW_H
+#ifndef BATATTACKHEALHOOKS_H
+#define BATATTACKHEALHOOKS_H
 
-#include "midscenvariables.h"
-#include <optional>
-#include <string>
-#include <unordered_map>
+namespace game {
+struct CBatAttackHeal;
+struct IMidgardObjectMap;
+struct BattleMsgData;
+struct CMidgardID;
+struct BattleUiData;
+} // namespace game
 
-namespace sol {
-class state;
-}
+namespace hooks {
 
-namespace bindings {
+bool __fastcall healAttackCanPerformHooked(game::CBatAttackHeal* thisptr,
+                                           int /*%edx*/,
+                                           game::IMidgardObjectMap* objectMap,
+                                           game::BattleMsgData* battleMsgData,
+                                           game::CMidgardID* unitId);
 
-class ScenarioVariableView;
+} // namespace hooks
 
-class ScenVariablesView
-{
-public:
-    ScenVariablesView(const game::CMidScenVariables* scenVariables);
-
-    static void bind(sol::state& lua);
-
-    std::vector<ScenarioVariableView> getItems() const;
-    std::optional<ScenarioVariableView> getScenarioVariable(const std::string& name) const;
-
-private:
-    std::unordered_map<std::string, const game::ScenarioVariable*> variables;
-    const game::CMidScenVariables* scenVariables;
-};
-
-} // namespace bindings
-
-#endif // SCENVARIABLESVIEW_H
+#endif // BATATTACKHEALHOOKS_H

@@ -10,14 +10,13 @@
 [submodule "sol2"]
 	path = sol2
 	url = https://github.com/ThePhD/sol2.git
-[submodule "SLikeNet"]
-	path = SLikeNet
-	url = https://github.com/VladimirMakeev/SLikeNet.git
-	branch = disciples2-lobby
-[submodule "D2RSG"]
-	path = D2RSG
-	url = https://github.com/bartonsun/D2RSG.git
 [submodule "spdlog"]
 	path = spdlog
 	url = https://github.com/gabime/spdlog.git
 	branch = v1.x
+[submodule "SLikeNet"]
+	path = SLikeNet
+	url = https://github.com/UnveN/SLikeNet.git
+[submodule "D2RSG"]
+	path = D2RSG
+	url = https://github.com/UnveN/D2RSG.git

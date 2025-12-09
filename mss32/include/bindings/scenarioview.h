@@ -55,6 +55,7 @@ class MerchantView;
 class MercsView;
 class TrainerView;
 class ResourceMarketView;
+class LandmarkView;
 
 /**
  * Returns stub values if objectMap is null.
@@ -194,6 +195,15 @@ public:
     std::optional<RuinView> findRuinByUnitId(const IdView& unitId) const;
     std::optional<RuinView> findRuinByUnitIdString(const std::string& unitId) const;
 
+    /** Searches for landmark by id string. */
+    std::optional<LandmarkView> getLandmark(const std::string& id) const;
+    /** Searches for landmark by id. */
+    std::optional<LandmarkView> getLandmarkById(const IdView& id) const;
+    /** Searches for landmark by coordinate pair. */
+    std::optional<LandmarkView> getLandmarkByCoordinates(int x, int y) const;
+    /** Searches for landmark at specified point. */
+    std::optional<LandmarkView> getLandmarkByPoint(const Point& p) const;
+
     std::string getName() const;
     std::string getDescription() const;
     std::string getAuthor() const;
@@ -216,6 +226,7 @@ public:
     void forEachMercenary(const std::function<void(const MercsView&)>& callback) const;
     void forEachTrainer(const std::function<void(const TrainerView&)>& callback) const;
     void forEachMarket(const std::function<void(const ResourceMarketView&)>& callback) const;
+    void forEachLandmark(const std::function<void(const LandmarkView&)>& callback) const;
 
     int addUnitXP(const IdView& unitId, int value);
     bool heal(const IdView& unitId, int value);

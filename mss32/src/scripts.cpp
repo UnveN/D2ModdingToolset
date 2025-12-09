@@ -38,6 +38,7 @@
 #include "idview.h"
 #include "itembaseview.h"
 #include "itemview.h"
+#include "landmarkview.h"
 #include "locationview.h"
 #include "merchantview.h"
 #include "mercsview.h"
@@ -478,6 +479,7 @@ static void bindApi(sol::state& lua)
     bindings::FortView::bind(lua);
     bindings::RuinView::bind(lua);
     bindings::GroupView::bind(lua);
+    bindings::LandmarkView::bind(lua);
     bindings::AttackView::bind(lua);
     bindings::CurrencyView::bind(lua);
     bindings::ItemBaseView::bind(lua);

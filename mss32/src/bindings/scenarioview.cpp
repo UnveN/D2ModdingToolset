@@ -26,6 +26,7 @@
 #include "gameutils.h"
 #include "idview.h"
 #include "itemview.h"
+#include "landmarkview.h"
 #include "locationview.h"
 #include "merchantview.h"
 #include "mercsview.h"
@@ -33,6 +34,7 @@
 #include "midgardmapblock.h"
 #include "midgardobjectmap.h"
 #include "midgardplan.h"
+#include "midlandmark.h"
 #include "midplayer.h"
 #include "midrod.h"
 #include "midruin.h"
@@ -116,6 +118,10 @@ void ScenarioView::bind(sol::state& lua)
     scenario["findRuinByUnit"] = sol::overload<>(&ScenarioView::findRuinByUnit,
                                                  &ScenarioView::findRuinByUnitId,
                                                  &ScenarioView::findRuinByUnitIdString);
+    scenario["getLandmark"] = sol::overload(&ScenarioView::getLandmark,
+                                            &ScenarioView::getLandmarkById,
+                                            &ScenarioView::getLandmarkByCoordinates,
+                                            &ScenarioView::getLandmarkByPoint);
     scenario["name"] = sol::property(&ScenarioView::getName);
     scenario["description"] = sol::property(&ScenarioView::getDescription);
     scenario["author"] = sol::property(&ScenarioView::getAuthor);
@@ -136,6 +142,7 @@ void ScenarioView::bind(sol::state& lua)
     scenario["forEachMercenary"] = &ScenarioView::forEachMercenary;
     scenario["forEachTrainer"] = &ScenarioView::forEachTrainer;
     scenario["forEachMarket"] = &ScenarioView::forEachMarket;
+    scenario["forEachLandmark"] = &ScenarioView::forEachLandmark;
     scenario["AddUnitXP"] = sol::overload<>(&ScenarioView::addUnitXP);
     scenario["Heal"] = sol::overload<>(&ScenarioView::heal);
     scenario["AddUnitModifier"] = sol::overload<>(&ScenarioView::addUnitModifier);
@@ -745,6 +752,64 @@ std::optional<ResourceMarketView> ScenarioView::getMarketByCoordinates(int x, in
 std::optional<ResourceMarketView> ScenarioView::getMarketByPoint(const Point& p) const
 {
     return getMarketByCoordinates(p.x, p.y);
+}
+
+std::optional<LandmarkView> ScenarioView::getLandmark(const std::string& id) const
+{
+    return getLandmarkById(IdView{id});
+}
+
+std::optional<LandmarkView> ScenarioView::getLandmarkById(const IdView& id) const
+{
+    using namespace game;
+
+    if (!objectMap) {
+        return std::nullopt;
+    }
+
+    if (CMidgardIDApi::get().getType(&id.id) != IdType::Landmark) {
+        return std::nullopt;
+    }
+
+    auto obj = objectMap->vftable->findScenarioObjectById(objectMap, &id.id);
+    if (!obj) {
+        return std::nullopt;
+    }
+
+    auto* landmark = static_cast<const CMidLandmark*>(obj);
+    return LandmarkView{landmark, objectMap};
+}
+
+std::optional<LandmarkView> ScenarioView::getLandmarkByCoordinates(int x, int y) const
+{
+    auto landmarkId = getObjectId(x, y, game::IdType::Landmark);
+    if (!landmarkId) {
+        return std::nullopt;
+    }
+
+    return getLandmarkById(IdView{landmarkId});
+}
+
+std::optional<LandmarkView> ScenarioView::getLandmarkByPoint(const Point& p) const
+{
+    return getLandmarkByCoordinates(p.x, p.y);
+}
+
+void ScenarioView::forEachLandmark(const std::function<void(const LandmarkView&)>& callback) const
+{
+    if (!objectMap) {
+        return;
+    }
+
+    using namespace game;
+
+    auto runCallback = [this, &callback](const IMidScenarioObject* obj) {
+        auto* landmark = static_cast<const CMidLandmark*>(obj);
+        const LandmarkView landmarkView{landmark, objectMap};
+        callback(landmarkView);
+    };
+
+    hooks::forEachScenarioObject(objectMap, IdType::Landmark, runCallback);
 }
 
 std::string ScenarioView::getName() const

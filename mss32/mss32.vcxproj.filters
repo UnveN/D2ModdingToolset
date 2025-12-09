@@ -1550,6 +1550,18 @@
     <ClCompile Include="src\resultsender.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\bindings\landmarkview.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="src\landmarkutils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\batattackheal.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\batattackhealhooks.cpp">
+      <Filter>hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aipriority.h">
@@ -2019,7 +2031,7 @@
     <ClInclude Include="include\miditem.h">
       <Filter>game</Filter>
     </ClInclude>
-	<ClInclude Include="include\itemtransferhooks.h">
+    <ClInclude Include="include\itemtransferhooks.h">
       <Filter>hooks</Filter>
     </ClInclude>
     <ClInclude Include="include\sitemerchantinterf.h">
@@ -3868,6 +3880,18 @@
     <ClInclude Include="include\resultsender.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="include\bindings\landmarkview.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="include\landmarkutils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\batattackheal.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\batattackhealhooks.h">
+      <Filter>hooks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="mss32.rc">
@@ -3876,7 +3900,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="module.def" />
-    <None Include="cpp.hint" />
+    <None Include="..\CONTRIBUTORS.md" />
+    <None Include="..\luaApi.md" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="midgardid.natvis" />
